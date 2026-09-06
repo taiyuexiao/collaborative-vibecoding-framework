@@ -85,3 +85,19 @@ describe("LocalGitProvider", () => {
     }
   });
 });
+
+describe("LocalGitProvider：嵌套仓库语义", () => {
+  it("ensureRepo 在外层仓库的子目录内会初始化独立嵌套仓库", async () => {
+    const outer = mkdtempSync(join(tmpdir(), "st-git-outer-"));
+    const nested = join(outer, "knowledge");
+    try {
+      await git.ensureRepo(outer);
+      await git.ensureRepo(nested); // 子目录：此前会被误判为已是仓库
+      // 嵌套仓库成立：nested 自身有 .git、有 HEAD 提交
+      expect(await git.revParse(nested, "HEAD")).toMatch(/^[0-9a-f]{40}$/);
+      expect(await git.isRepo(nested)).toBe(true);
+    } finally {
+      rmSync(outer, { recursive: true, force: true });
+    }
+  });
+});

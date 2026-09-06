@@ -12,7 +12,8 @@
     "test:watch": "vitest",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "daemon": "tsx packages/daemon/src/main.ts",
-    "mcp": "tsx packages/mcp/src/main.ts"
+    "mcp": "tsx packages/mcp/src/main.ts",
+    "seed": "tsx scripts/seed-demo.ts"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

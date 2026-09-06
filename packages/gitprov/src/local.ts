@@ -82,7 +82,16 @@ export class LocalGitProvider implements GitProvider {
 
   async ensureRepo(dir: string, opts?: { defaultBranch?: string }): Promise<void> {
     mkdirSync(dir, { recursive: true }); // ensure 语义：目录不存在则创建（git init 需要已存在的 cwd）
-    if (!(await this.isRepo(dir))) {
+    // 必须判断 dir 自身是仓库根（toplevel），而非"位于某个仓库内"——否则嵌套目录（如项目内的 knowledge/）
+    // 会因外层仓库误判为已是仓库而跳过 init，后续 add/commit 全部落到外层仓库。
+    let isTop = false;
+    try {
+      const top = await run(dir, "rev-parse", ["--show-toplevel"]);
+      isTop = bestEffortRealpath(top.trim()) === bestEffortRealpath(dir);
+    } catch {
+      isTop = false; // 不在任何仓库内
+    }
+    if (!isTop) {
       await run(dir, "init", ["-b", opts?.defaultBranch ?? "main"]);
     }
     // 空仓库（无任何提交）时 main 分支 unborn，merge-base/worktree 会失败——补一个空提交保证 HEAD 存在
