@@ -25,18 +25,23 @@ afterAll(async () => {
 });
 
 describe("TaskService", () => {
-  it("create：DoD 必填，发布 task.created", async () => {
+  it("create：DoD 必填，发布 task.created；assigneeMemberId 可显式传 null（负责人未定）", async () => {
     await expect(
       svc.create({ title: "x", dod: "" }, human),
     ).rejects.toMatchObject({ code: "VALIDATION_FAILED" });
+
+    await expect(
+      svc.create({ title: "x", dod: "d", assigneeMemberId: null }, human),
+    ).resolves.toMatchObject({ status: "draft", assigneeMemberId: null });
 
     const t = await svc.create(
       { title: "实现批量取消", dod: "接口可用+幂等", module: "order", tags: ["java"] },
       human,
     );
     expect(t.status).toBe("draft");
+    // 本用例已产生 2 条 task.created（null 负责人 1 条 + 正常 1 条）
     const evs = await new EventsRepo(db.db).listByType("task.created");
-    expect(evs.length).toBe(1);
+    expect(evs.length).toBe(2);
     expect(evs[0]?.payload).toMatchObject({ taskId: t.id });
   });
 

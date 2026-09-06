@@ -23,9 +23,9 @@ const CreateTaskSchema = z.object({
   title: z.string().min(1),
   description: z.string().default(""),
   dod: z.string().min(1, "DoD（验收标准）必填"),
-  module: z.string().optional(),
+  module: z.string().nullable().optional(),
   tags: z.array(z.string()).default([]),
-  assigneeMemberId: z.string().optional(),
+  assigneeMemberId: z.string().nullable().optional(), // 与 core TaskSchema 的 nullable 对齐；负责人未定时传 null
 });
 
 const SetDepsSchema = z.object({
