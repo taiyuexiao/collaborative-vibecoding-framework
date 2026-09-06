@@ -7,5 +7,12 @@
   "types": "src/index.ts",
   "exports": {
     ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@superteam/core": "workspace:*",
+    "@superteam/data": "workspace:*",
+    "@superteam/infra": "workspace:*",
+    "@superteam/knowledge": "workspace:*",
+    "@superteam/gitprov": "workspace:*"
   }
 }

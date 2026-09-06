@@ -94,9 +94,16 @@ export class TaskService {
     const current = await this.get(id);
     const next = coreTransition(current, action); // 非法迁移在这里抛，不落库
     await this.d.tasks.update(next);
+    // 负载携带任务快照：蒸馏器等下游消费者无需回查即可起草
     await this.emit(
       "task.transitioned",
-      { taskId: id, from: current.status, to: next.status, action },
+      {
+        taskId: id,
+        from: current.status,
+        to: next.status,
+        action,
+        task: { title: next.title, dod: next.dod, description: next.description, module: next.module },
+      },
       actor,
     );
     return next;

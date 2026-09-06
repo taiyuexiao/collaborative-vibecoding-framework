@@ -61,9 +61,9 @@
 
 | # | 子模块 | 包/位置 | 依赖 | 状态 |
 |---|---|---|---|---|
-| S5.1 | 事件订阅框架 + 规则引擎 | packages/distiller | S2.2 | ⬜ |
-| S5.2 | 问答→经验卡链路（LLM 起草→propose） | packages/distiller | S5.1,S1.2 | ⬜ |
-| S5.3 | 每日 digest 生成器 | packages/distiller | S5.1 | ⬜ |
+| S5.1 | 事件订阅框架 + 规则引擎 | packages/distiller | S2.2 | ✅ |
+| S5.2 | 问答→经验卡链路（LLM 起草→propose） | packages/distiller | S5.1,S1.2 | ✅ |
+| S5.3 | 每日 digest 生成器 | packages/distiller | S5.1 | ✅ |
 
 ## M6 集成收尾
 
