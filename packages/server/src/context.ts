@@ -16,6 +16,8 @@ import type { SuperteamConfig } from "@superteam/infra";
 import { KnowledgeRepo } from "@superteam/knowledge";
 import { SearchService } from "@superteam/knowledge";
 import { TaskService } from "@superteam/tasks";
+import { DigestService, llmFromConfig, type LlmClient } from "@superteam/distiller";
+import { notifyFromConfig, type NotifyChannel } from "./notify.js";
 
 export interface Context {
   config: SuperteamConfig;
@@ -30,6 +32,9 @@ export interface Context {
   search: SearchService;
   knowledge: KnowledgeRepo;
   taskService: TaskService;
+  digest: DigestService;
+  llm: LlmClient;
+  notify: NotifyChannel;
   sockets: Set<unknown>;
 }
 
@@ -38,6 +43,8 @@ export async function createContext(config: SuperteamConfig): Promise<Context> {
   const db = await createDb(join(config.dataDir, "superteam.db"));
   const git = new LocalGitProvider();
   const search = new SearchService(db.client);
+  const llm = llmFromConfig(config);
+  const notify = notifyFromConfig(config);
   const knowledge = new KnowledgeRepo({
     knowledgeDir: config.knowledgeDir,
     git,
@@ -62,6 +69,9 @@ export async function createContext(config: SuperteamConfig): Promise<Context> {
       deps: new DepsRepo(db.db),
       events: new EventsRepo(db.db),
     }),
+    digest: new DigestService({ events: new EventsRepo(db.db), tasks: new TasksRepo(db.db) }),
+    llm,
+    notify,
     sockets: new Set<unknown>(),
   };
 }

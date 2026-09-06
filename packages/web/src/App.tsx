@@ -2,6 +2,114 @@ import { useCallback, useEffect, useState } from "react";
 import { allowedActions, TASK_STATUSES, type TaskAction } from "@superteam/core";
 import { api, type Task } from "./api.js";
 
+type ArtifactHit = { path: string; title: string; tags: string[]; snippet: string };
+type ArtifactDoc = {
+  html: string;
+  toc: { level: number; text: string; slug: string }[];
+  meta: { path: string; title: string; type: string; tags: string[]; owner: string | null; status: string; expiresAt: string | null };
+};
+
+function KnowledgeView() {
+  const [text, setText] = useState("");
+  const [type, setType] = useState("");
+  const [hits, setHits] = useState<ArtifactHit[]>([]);
+  const [doc, setDoc] = useState<ArtifactDoc | null>(null);
+  const [digest, setDigest] = useState<string | null>(null);
+
+  const search = useCallback(async () => {
+    setHits(await api.searchArtifacts({ text: text || undefined, type: type || undefined }));
+  }, [text, type]);
+
+  useEffect(() => {
+    void search();
+  }, [search]);
+
+  const open = async (path: string) => setDoc(await api.readArtifact(path));
+
+  return (
+    <div className="knowledge">
+      <div className="kbar">
+        <input
+          placeholder="检索知识（中文短语 / 关键词）"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && void search()}
+        />
+        <select value={type} onChange={(e) => setType(e.target.value)}>
+          <option value="">全部类型</option>
+          <option value="spec">spec</option>
+          <option value="adr">adr</option>
+          <option value="card">card</option>
+          <option value="reading">reading</option>
+          <option value="agent-doc">agent-doc</option>
+        </select>
+        <button onClick={() => void search()}>搜索</button>
+        <button
+          onClick={async () => {
+            const r = await api.digest(24);
+            setDigest(r.markdown);
+          }}
+        >
+          生成日报
+        </button>
+      </div>
+
+      <div className="klayout">
+        <div className="klist">
+          {hits.map((h) => (
+            <div key={h.path} className="hit" onClick={() => void open(h.path)}>
+              <b>{h.title}</b>
+              <span className="tag">{h.path.split("/")[0]}</span>
+              <div className="muted" dangerouslySetInnerHTML={{ __html: h.snippet }} />
+            </div>
+          ))}
+          {hits.length === 0 && <p className="muted">无结果（agent 或成员 propose 后出现）</p>}
+        </div>
+
+        {doc && (
+          <div className="kdoc">
+            <header>
+              <h2>{doc.meta.title}</h2>
+              <button onClick={() => setDoc(null)}>×</button>
+            </header>
+            <div className="meta">
+              <span className="tag">{doc.meta.type}</span>
+              {doc.meta.tags.map((t) => (
+                <span key={t} className="tag">{t}</span>
+              ))}
+              <span className="muted">
+                {doc.meta.owner ? `by ${doc.meta.owner} · ` : ""}
+                {doc.meta.status}
+                {doc.meta.expiresAt ? ` · 过期 ${doc.meta.expiresAt}` : ""}
+              </span>
+            </div>
+            {doc.toc.length > 0 && (
+              <nav className="toc">
+                {doc.toc.map((t) => (
+                  <div key={t.slug} style={{ paddingLeft: (t.level - 2) * 14 }}>
+                    {t.text}
+                  </div>
+                ))}
+              </nav>
+            )}
+            <article className="md" dangerouslySetInnerHTML={{ __html: doc.html }} />
+          </div>
+        )}
+
+        {digest && (
+          <div className="kdoc">
+            <header>
+              <h2>共工日报</h2>
+              <button onClick={() => setDigest(null)}>×</button>
+            </header>
+            <pre className="digest">{digest}</pre>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 const COLUMNS = ["draft", "claimed", "coding", "self_review", "waiting_review", "blocked", "done"] as const;
 
 const ACTION_LABELS: Record<TaskAction, string> = {
@@ -212,5 +320,16 @@ function Gate({ onReady }: { onReady: () => void }) {
 
 export default function App() {
   const [ready, setReady] = useState(Boolean(localStorage.getItem("st_token")));
-  return ready ? <Board /> : <Gate onReady={() => setReady(true)} />;
+  const [tab, setTab] = useState<"board" | "knowledge">("board");
+  if (!ready) return <Gate onReady={() => setReady(true)} />;
+  return (
+    <>
+      <nav className="topnav">
+        <b className="brand">共工</b>
+        <button className={tab === "board" ? "on" : ""} onClick={() => setTab("board")}>任务看板</button>
+        <button className={tab === "knowledge" ? "on" : ""} onClick={() => setTab("knowledge")}>知识库</button>
+      </nav>
+      {tab === "board" ? <Board /> : <KnowledgeView />}
+    </>
+  );
 }

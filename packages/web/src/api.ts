@@ -39,4 +39,17 @@ export const api = {
     req<unknown>("PUT", `/api/v1/tasks/${id}/deps`, { deps }),
   listSessions: () =>
     req<{ id: string; memberId: string; adapter: string; taskId: string | null; status: string; branch: string | null; diffSummary: string | null }[]>("GET", "/api/v1/sessions"),
+  searchArtifacts: (q: { text?: string; type?: string; tags?: string }) =>
+    req<{ path: string; title: string; tags: string[]; snippet: string }[]>(
+      "GET",
+      `/api/v1/artifacts?${new URLSearchParams(Object.entries(q).filter(([, v]) => v).map(([k, v]) => [k, String(v)])).toString()}`,
+    ),
+  readArtifact: (path: string) =>
+    req<{ html: string; toc: { level: number; text: string; slug: string }[]; meta: { path: string; title: string; type: string; tags: string[]; owner: string | null; status: string; expiresAt: string | null; typeMismatch: boolean } }>(
+      "GET",
+      `/api/v1/artifacts/${path}`,
+    ),
+  artifactHistory: () =>
+    req<{ sha: string; date: string; message: string; paths: string[] }[]>("GET", "/api/v1/artifacts/history"),
+  digest: (hours = 24) => req<{ markdown: string }>("GET", `/api/v1/digest?hours=${hours}`),
 };

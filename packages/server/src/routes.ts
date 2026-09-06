@@ -175,6 +175,21 @@ export function buildRoutes(ctx: Context, broadcast: Broadcast) {
 
     app.get("/api/v1/sessions", async () => ctx.sessions.list());
 
+    /* ---------------- digest / notify ---------------- */
+
+    app.get("/api/v1/digest", async (req) => {
+      const q = req.query as { hours?: string };
+      return { markdown: await ctx.digest.generate(q.hours ? Number(q.hours) : 24) };
+    });
+
+    app.post("/api/v1/digest/send", async (req) => {
+      requireActor(await authMember(ctx, req));
+      const markdown = await ctx.digest.generate(24);
+      await ctx.notify.sendText(markdown);
+      broadcast("notify.sent", { channel: ctx.notify.name });
+      return { sent: true, channel: ctx.notify.name };
+    });
+
     /* ---------------- events ---------------- */
 
     app.get("/api/v1/events", async (req) => {

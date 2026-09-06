@@ -33,3 +33,31 @@ UI 组件无单测（MVP 决策：核心逻辑在 core/tasks 已覆盖，UI 由 
 
 ## 实际偏差
 无。
+
+---
+
+# SDD: S6.1 档案站 Web 视图
+
+## 任务描述
+在 web 包新增「知识库」标签页：全文检索（中文短语）+ 类型过滤、命中列表（高亮 snippet）、文档详情（front-matter 元数据 + TOC + 渲染 HTML）、共工日报预览。对应 PRD F2.4。
+
+## 目标与验收
+- [x] 顶栏双 Tab（任务看板 / 知识库）
+- [x] 检索与过滤走 GET /api/v1/artifacts；详情走 /api/v1/artifacts/:path
+- [x] 日报按钮调 GET /api/v1/digest 渲染 markdown 原文
+- [x] tsc 零错误、vite build 成功
+
+## 技术路线
+详情 HTML 由服务端 renderKnowledge 产出（S1.4），前端 dangerouslySetInnerHTML——信任边界在写入口 propose（团队 Git 仓库），与 TECH §5.4 的决策一致。
+
+## 上下游依赖
+上游：S1.4/S1.5 服务、server 路由。下游：无。
+
+## 测试清单
+UI 无单测（同 S2.4 决策），由 S6.3 冒烟覆盖后端数据链路 + build/tsc 门禁。
+
+## 报错与解决
+无。
+
+## 实际偏差
+无。

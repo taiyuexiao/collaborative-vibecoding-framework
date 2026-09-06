@@ -17,6 +17,11 @@
     "@superteam/tasks": "workspace:*",
     "fastify": "^5.2.0",
     "@fastify/cors": "^11.0.0",
-    "@fastify/websocket": "^11.0.0"
+    "@fastify/websocket": "^11.0.0",
+    "@superteam/radar": "workspace:*",
+    "@superteam/distiller": "workspace:*"
+  },
+  "devDependencies": {
+    "@superteam/daemon": "workspace:*"
   }
 }

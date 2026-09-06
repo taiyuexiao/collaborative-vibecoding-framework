@@ -69,15 +69,15 @@
 
 | # | 子模块 | 包/位置 | 依赖 | 状态 |
 |---|---|---|---|---|
-| S6.1 | 档案站 Web 视图 | packages/web | S1.4 | ⬜ |
-| S6.2 | 通知出口（webhook+飞书 bot 最小实现） | packages/server/src/notify | S5.3 | ⬜ |
-| S6.3 | 端到端冒烟（一键启动+全链路测试） | scripts + packages/server | 全部 | ⬜ |
+| S6.1 | 档案站 Web 视图 | packages/web | S1.4 | ✅ |
+| S6.2 | 通知出口（webhook+飞书 bot 最小实现） | packages/server/src/notify | S5.3 | ✅ |
+| S6.3 | 端到端冒烟（一键启动+全链路测试） | scripts + packages/server | 全部 | ✅ |
 
 ## 里程碑
 
 - [x] MS1：M0+M1+M2 —— 知识库+任务总线+MCP+看板可用（curl 冒烟通过） —— 知识库+任务总线+MCP 可用
-- [ ] MS2：M3+M4 —— 任务执行闭环+冲突预警
-- [ ] MS3：M5+M6 —— 蒸馏、档案站、通知、端到端冒烟
+- [x] MS2：M3+M4 —— 任务执行闭环+冲突预警
+- [x] MS3：M5+M6 —— 蒸馏、档案站、通知、端到端冒烟
 
 ## 变更记录
 

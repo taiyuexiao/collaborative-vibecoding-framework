@@ -13,6 +13,8 @@ const ConfigSchema = z.object({
   llmApiKey: z.string().min(1).optional(),
   llmModel: z.string().default("glm-4.7"),
   radarIntervalMs: z.coerce.number().int().min(1000).default(30_000),
+  repoDir: z.string().default(process.cwd()), // 任务源仓库（雷达扫描 worktree 用）
+  feishuWebhook: z.string().url().optional(), // 飞书群机器人 webhook（digest 推送）
 });
 
 export type SuperteamConfig = z.infer<typeof ConfigSchema>;

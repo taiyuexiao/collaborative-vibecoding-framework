@@ -33,7 +33,8 @@ export interface RadarDeps {
   contractDirs?: string[]; // 默认 specs/ 与 agents/
 }
 
-const IN_FLIGHT_STATUSES = ["claimed", "coding", "self_review"] as const;
+// 在途 = 分支尚未合入 main 的所有状态；waiting_review（已提交待评审）仍是冲突高危窗口
+const IN_FLIGHT_STATUSES = ["claimed", "coding", "self_review", "waiting_review"] as const;
 const systemActor: Actor = { actorType: "system", actorId: "radar" };
 
 export class ConflictRadar {

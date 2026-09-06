@@ -184,6 +184,9 @@ importers:
       '@superteam/data':
         specifier: workspace:*
         version: link:../data
+      '@superteam/distiller':
+        specifier: workspace:*
+        version: link:../distiller
       '@superteam/gitprov':
         specifier: workspace:*
         version: link:../gitprov
@@ -193,12 +196,19 @@ importers:
       '@superteam/knowledge':
         specifier: workspace:*
         version: link:../knowledge
+      '@superteam/radar':
+        specifier: workspace:*
+        version: link:../radar
       '@superteam/tasks':
         specifier: workspace:*
         version: link:../tasks
       fastify:
         specifier: ^5.2.0
         version: 5.12.3
+    devDependencies:
+      '@superteam/daemon':
+        specifier: workspace:*
+        version: link:../daemon
 
   packages/tasks:
     dependencies:
