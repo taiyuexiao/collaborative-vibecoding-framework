@@ -81,3 +81,5 @@ export class TaskExecutor {
 ## 实际偏差
 
 无（WS 降级见上）。
+3. **报错（类型门禁）**：executor 从 client.js 导入 AgentAdapter，但接口定义在 adapters.js。
+   **解决**：改为从 adapters.js 导入类型。vitest（esbuild，无类型检查）能跑过而 tsc 拦下——最终验收以 `tsc --noEmit` 全绿 + vitest 全绿双门禁为准。

@@ -3,7 +3,8 @@ import { join } from "node:path";
 import type { Task } from "@superteam/core";
 import type { Logger } from "@superteam/infra";
 import { LocalGitProvider } from "@superteam/gitprov";
-import { buildPrompt, type AgentAdapter, type DaemonClientLike } from "./client.js";
+import { buildPrompt, type DaemonClientLike } from "./client.js";
+import type { AgentAdapter } from "./adapters.js";
 
 export interface TaskExecutorDeps {
   client: DaemonClientLike;

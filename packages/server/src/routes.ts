@@ -74,7 +74,7 @@ export function buildRoutes(ctx: Context, broadcast: Broadcast) {
     app.put("/api/v1/tasks/:id/deps", async (req) => {
       const m = requireActor(await authMember(ctx, req));
       const { id } = req.params as { id: string };
-      const body = (req.body ?? {}) as { deps?: { dependsOnTaskId: string; kind?: string }[] };
+      const body = (req.body ?? {}) as { deps?: { dependsOnTaskId: string; kind?: "interface" | "sequence" }[] };
       const deps = await ctx.taskService.setDeps(id, body.deps ?? [], m);
       broadcast("task.dep_changed", { taskId: id });
       return deps;

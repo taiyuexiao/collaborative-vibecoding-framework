@@ -62,3 +62,5 @@ export function slugify(title: string): string
 ## 实际偏差
 
 无。
+3. **报错（类型门禁）**：dateishString 参数类型声明为 z.ZodString，传入 optional 后的 schema 编译报错。
+   **解决**：泛型化 `<T extends z.ZodTypeAny>`，optional 移到 preprocess 之外。

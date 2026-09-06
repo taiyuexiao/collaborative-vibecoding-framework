@@ -25,7 +25,7 @@ export function typeOfDir(dir: string): ArtifactType | null {
 }
 
 /** gray-matter 会把 YAML 日期解析成 JS Date；统一转回 YYYY-MM-DD 字符串再校验。 */
-const dateishString = (schema: z.ZodString) =>
+const dateishString = <T extends z.ZodTypeAny>(schema: T) =>
   z.preprocess((v) => (v instanceof Date ? v.toISOString().slice(0, 10) : v), schema);
 
 export const FrontmatterSchema = z.object({
@@ -33,8 +33,8 @@ export const FrontmatterSchema = z.object({
   type: z.string().optional(),
   tags: z.array(z.string()).default([]),
   owner: z.string().nullable().optional(),
-  created: dateishString(z.string().optional()),
-  expires: dateishString(z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "expires 必须是 YYYY-MM-DD").optional()),
+  created: dateishString(z.string()).optional(),
+  expires: dateishString(z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "expires 必须是 YYYY-MM-DD")).optional(),
   status: z.string().optional(),
 });
 

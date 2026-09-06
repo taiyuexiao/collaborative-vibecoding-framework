@@ -24,7 +24,7 @@ afterAll(async () => {
   rmSync(dir, { recursive: true, force: true });
 });
 
-function ev(type: string, payload: unknown): Event {
+function ev(type: Event["type"], payload: unknown): Event {
   return {
     id: newId("ev"),
     type,
