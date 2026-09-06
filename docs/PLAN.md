@@ -16,11 +16,11 @@
 
 | # | 子模块 | 包/位置 | 依赖 | 状态 |
 |---|---|---|---|---|
-| S0.1 | monorepo 脚手架 | 根 + 各包基础 | - | ⬜ |
-| S0.2 | 领域模型（类型+zod+状态机） | packages/core | S0.1 | ⬜ |
-| S0.4 | 基建件（配置/日志/错误） | packages/infra | S0.1 | ⬜ |
-| S0.3 | 数据层（Drizzle+SQLite+仓储） | packages/data | S0.2,S0.4 | ⬜ |
-| S0.5 | GitProvider + 本地实现 | packages/gitprov | S0.2,S0.4 | ⬜ |
+| S0.1 | monorepo 脚手架 | 根 + 各包基础 | - | ✅ |
+| S0.2 | 领域模型（类型+zod+状态机） | packages/core | S0.1 | ✅ |
+| S0.4 | 基建件（配置/日志/错误） | packages/infra | S0.1 | ✅ |
+| S0.3 | 数据层（Drizzle+SQLite+仓储） | packages/data | S0.2,S0.4 | ✅ |
+| S0.5 | GitProvider + 本地实现 | packages/gitprov | S0.2,S0.4 | ✅ |
 
 ## M1 知识档案层
 
@@ -75,7 +75,7 @@
 
 ## 里程碑
 
-- [ ] MS1：M0+M1+M2 —— 知识库+任务总线+MCP 可用
+- [ ] MS1：M0+M1+M2（M0 已完成） —— 知识库+任务总线+MCP 可用
 - [ ] MS2：M3+M4 —— 任务执行闭环+冲突预警
 - [ ] MS3：M5+M6 —— 蒸馏、档案站、通知、端到端冒烟
 

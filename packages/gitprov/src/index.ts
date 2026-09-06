@@ -1,1 +1,1 @@
-export const PKG = "@superteam/gitprov";
+export * from "./local.js";

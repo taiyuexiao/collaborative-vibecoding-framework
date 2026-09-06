@@ -43,7 +43,11 @@ importers:
 
   packages/distiller: {}
 
-  packages/gitprov: {}
+  packages/gitprov:
+    dependencies:
+      '@superteam/core':
+        specifier: workspace:*
+        version: link:../core
 
   packages/infra:
     dependencies:

@@ -61,3 +61,7 @@ packages/<pkg>/src/<submodule>/SDD.md      # 子模块级
 <!-- 由开发过程滚动维护 -->
 
 - [S0.1 monorepo 脚手架](./S0.1-monorepo脚手架.md)（仓库级子模块，SDD 归档于 docs/sdd/）
+- [S0.2 领域模型](../../packages/core/src/SDD.md)
+- [S0.4 基建件](../../packages/infra/src/SDD.md)
+- [S0.3 数据层](../../packages/data/src/SDD.md)
+- [S0.5 GitProvider](../../packages/gitprov/src/SDD.md)
