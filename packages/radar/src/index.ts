@@ -1,1 +1,1 @@
-export const PKG = "@superteam/radar";
+export * from "./radar.js";

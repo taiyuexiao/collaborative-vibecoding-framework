@@ -142,7 +142,17 @@ importers:
         specifier: ^3.25.76
         version: 3.25.76
 
-  packages/radar: {}
+  packages/radar:
+    dependencies:
+      '@superteam/core':
+        specifier: workspace:*
+        version: link:../core
+      '@superteam/data':
+        specifier: workspace:*
+        version: link:../data
+      '@superteam/gitprov':
+        specifier: workspace:*
+        version: link:../gitprov
 
   packages/server:
     dependencies:
