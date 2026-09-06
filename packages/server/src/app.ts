@@ -46,7 +46,8 @@ export async function buildServer(ctx: Context): Promise<FastifyInstance> {
     // Fastify 框架错误（如畸形 JSON 解析失败）自带 statusCode，尊重之；其余未知错误归 500 且不泄内部信息
     const frameworkStatus = (err as { statusCode?: number }).statusCode;
     if (frameworkStatus && frameworkStatus >= 400 && frameworkStatus < 500) {
-      reply.status(frameworkStatus).send({ error: { code: "BAD_REQUEST", message: err.message.slice(0, 200) } });
+      const msg = (err as { message?: string }).message ?? "请求无法处理";
+      reply.status(frameworkStatus).send({ error: { code: "BAD_REQUEST", message: msg.slice(0, 200) } });
       return;
     }
     reply.status(500).send({ error: { code: "INTERNAL", message: "内部错误" } });
