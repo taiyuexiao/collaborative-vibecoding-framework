@@ -1,0 +1,9 @@
+node_modules/
+dist/
+data/*.db
+data/*.db-*
+*.log
+.env
+.env.*
+.DS_Store
+knowledge/.superteam/

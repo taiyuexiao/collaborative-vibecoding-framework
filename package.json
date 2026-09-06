@@ -1,0 +1,23 @@
+{
+  "name": "superteam",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "tsx watch packages/server/src/main.ts",
+    "dev:web": "pnpm --filter @superteam/web dev",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "daemon": "tsx packages/daemon/src/main.ts",
+    "mcp": "tsx packages/mcp/src/main.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  }
+}
