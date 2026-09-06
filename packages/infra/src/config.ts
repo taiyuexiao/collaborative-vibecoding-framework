@@ -31,6 +31,8 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
     llmApiKey: env["SUPERTEAM_LLM_APIKEY"],
     llmModel: env["SUPERTEAM_LLM_MODEL"],
     radarIntervalMs: env["SUPERTEAM_RADAR_INTERVAL_MS"],
+    repoDir: env["SUPERTEAM_REPO_DIR"],
+    feishuWebhook: env["SUPERTEAM_FEISHU_WEBHOOK"],
   };
   const cleaned = Object.fromEntries(Object.entries(raw).filter(([, v]) => v !== undefined));
   const parsed = ConfigSchema.safeParse(cleaned);

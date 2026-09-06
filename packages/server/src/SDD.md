@@ -69,3 +69,10 @@ export function broadcast(ctx, type: string, payload: unknown): void  // 测试�
 ## 补充（S6.4）：7300 直接托管 Web 界面
 
 用户预期「工作入口只有一个」——server 现在用 @fastify/static 托管 packages/web/dist，SPA fallback 对非 /api、/ws 路径回 index.html。构建产物不存在时自动跳过（纯 API 模式仍可用）。dev 实例数据目录（/data/、/knowledge/）加入 .gitignore。
+
+## 补充（E2E 全功能扫描结论）
+
+scripts/e2e-full.ts 对真实 main.ts 实例做 12 组 43 项全功能扫描（静态托管/认证/生命周期/依赖/知识/会话/WS/daemon/雷达循环/蒸馏循环/MCP stdio/日报/并发与畸形输入轰炸），全部通过。过程中修复两个装配层真 bug：
+1. main.ts 雷达循环的状态过滤漏 waiting_review（与 radar.ts 重复维护所致）——装配层与领域层共享的常量应单点定义；
+2. 畸形 JSON 返回 500——error handler 现在尊重 Fastify 框架错误的 statusCode（4xx 透传）。
+另修复 infra config 的 env 映射漏配（SUPERTEAM_REPO_DIR/FEISHU_WEBHOOK 在 schema 有字段但 loadConfig 未读取，静默失效）——新增回归测试钉死。

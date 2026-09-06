@@ -40,4 +40,13 @@ describe("loadConfig", () => {
       "https://open.bigmodel.cn/api/paas/v4",
     );
   });
+
+  it("repoDir 与 feishuWebhook 从 env 读取（回归：schema 有字段但 env 映射漏配导致静默忽略）", () => {
+    const c = loadConfig({
+      SUPERTEAM_REPO_DIR: "/srv/repo",
+      SUPERTEAM_FEISHU_WEBHOOK: "https://open.feishu.cn/open-apis/bot/v2/hook/xxx",
+    });
+    expect(c.repoDir).toBe("/srv/repo");
+    expect(c.feishuWebhook).toBe("https://open.feishu.cn/open-apis/bot/v2/hook/xxx");
+  });
 });

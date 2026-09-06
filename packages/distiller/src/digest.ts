@@ -11,7 +11,8 @@ export class DigestService {
     const lines: string[] = [`# 共工日报（近 ${sinceHours} 小时）`, ""];
 
     const transitions = (await this.d.events.listByType("task.transitioned", 200)).filter(
-      (e) => e.createdAt >= since && !e.consumedAt,
+      // 注意：不看 consumedAt——被蒸馏器消费 ≠ 没发生过；日报反映活动历史而非队列状态
+      (e) => e.createdAt >= since,
     );
     lines.push(`## 任务动态（${transitions.length}）`);
     for (const e of transitions.slice(0, 20)) {

@@ -22,7 +22,16 @@ function headers(): Record<string, string> {
 async function req<T>(method: string, url: string, body?: unknown): Promise<T> {
   const r = await fetch(url, { method, headers: headers(), body: body ? JSON.stringify(body) : undefined });
   const data = (await r.json()) as { error?: { message?: string } };
-  if (!r.ok) throw new Error(data?.error?.message ?? `HTTP ${r.status}`);
+  if (!r.ok) {
+    // token 失效（服务端重置/被移除）：清凭证回注册门，避免卡在全是 401 的看板上
+    if (r.status === 401 && localStorage.getItem("st_token")) {
+      localStorage.removeItem("st_token");
+      localStorage.removeItem("st_me");
+      location.reload();
+      throw new Error("登录状态已失效，请重新注册");
+    }
+    throw new Error(data?.error?.message ?? `HTTP ${r.status}`);
+  }
   return data as T;
 }
 

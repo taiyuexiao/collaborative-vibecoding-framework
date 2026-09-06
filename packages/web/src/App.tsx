@@ -145,9 +145,31 @@ function Board() {
 
   useEffect(() => {
     void refresh();
-    const ws = new WebSocket(`${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/ws`);
-    ws.onmessage = () => void refresh();
-    return () => ws.close();
+    // WS 断线自动重连（指数退避）：服务重启/网络抖动后页面无需手动刷新
+    let ws: WebSocket | null = null;
+    let closed = false;
+    let retry = 1000;
+    const connect = () => {
+      if (closed) return;
+      ws = new WebSocket(`${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/ws`);
+      ws.onopen = () => {
+        retry = 1000;
+        void refresh();
+      };
+      ws.onmessage = () => void refresh();
+      ws.onclose = () => {
+        if (!closed) {
+          setTimeout(connect, retry);
+          retry = Math.min(retry * 2, 15000);
+        }
+      };
+      ws.onerror = () => ws?.close();
+    };
+    connect();
+    return () => {
+      closed = true;
+      ws?.close();
+    };
   }, [refresh]);
 
   const create = async () => {

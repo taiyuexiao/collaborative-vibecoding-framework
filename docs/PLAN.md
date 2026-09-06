@@ -79,6 +79,14 @@
 - [x] MS2：M3+M4 —— 任务执行闭环+冲突预警
 - [x] MS3：M5+M6 —— 蒸馏、档案站、通知、端到端冒烟
 
+## 补充工具链
+
+| # | 内容 | 位置 | 状态 |
+|---|---|---|---|
+| T.1 | 演示数据种子 | scripts/seed-demo.ts（pnpm seed） | ✅ |
+| T.2 | 全功能 E2E 扫描（43 项，真实 main.ts + MCP stdio + WS） | scripts/e2e-full.ts | ✅ |
+
 ## 变更记录
 
 - 2026-09-06 v0.1 初版拆分（PRD/TECH 定稿后）
+- 2026-09-06 v0.2 E2E 扫描：修复装配层雷达过滤、畸形 JSON 500、config env 映射漏配、UI 401 恢复、WS 重连、digest 口径

@@ -31,8 +31,9 @@ async function main() {
   const radarTimer = setInterval(() => {
     void (async () => {
       const inFlight = await ctx.tasks.list();
+      // 与 radar.ts 的 IN_FLIGHT_STATUSES 保持一致：waiting_review（待评审未合入）也是冲突高危窗口
       const items = inFlight
-        .filter((t) => ["claimed", "coding", "self_review"].includes(t.status))
+        .filter((t) => ["claimed", "coding", "self_review", "waiting_review"].includes(t.status))
         .map((t) => ({ taskId: t.id, dir: join(cfg.repoDir, ".superteam-worktrees", t.id) }))
         .filter((i) => existsSync(i.dir));
       if (items.length > 0) await radar.sweep(items);
