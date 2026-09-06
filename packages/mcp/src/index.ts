@@ -1,1 +1,1 @@
-export const PKG = "@superteam/mcp";
+export * from "./handlers.js";

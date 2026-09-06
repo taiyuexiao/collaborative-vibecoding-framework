@@ -59,6 +59,7 @@ export class KnowledgeRepo {
   read(path: string): Promise<{ parsed: ParsedKnowledge; raw: string }>
   propose(input: ProposeInput): Promise<{ path: string; sha: string | null }>
   history(path: string): Promise<CommitInfo[]>
+  recentChanges(n?: number): Promise<CommitWithFiles[]>   // S1.2 扩展：供 MCP latest（gitprov 新增 logWithFiles）
 }
 ```
 

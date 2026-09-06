@@ -112,6 +112,15 @@ importers:
       '@superteam/core':
         specifier: workspace:*
         version: link:../core
+      '@superteam/data':
+        specifier: workspace:*
+        version: link:../data
+      '@superteam/gitprov':
+        specifier: workspace:*
+        version: link:../gitprov
+      '@superteam/infra':
+        specifier: workspace:*
+        version: link:../infra
       '@superteam/knowledge':
         specifier: workspace:*
         version: link:../knowledge

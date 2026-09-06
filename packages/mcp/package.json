@@ -12,6 +12,9 @@
     "@superteam/core": "workspace:*",
     "@superteam/knowledge": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.12.0",
-    "zod": "^3.25.76"
+    "zod": "^3.25.76",
+    "@superteam/data": "workspace:*",
+    "@superteam/gitprov": "workspace:*",
+    "@superteam/infra": "workspace:*"
   }
 }

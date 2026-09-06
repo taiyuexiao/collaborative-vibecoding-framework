@@ -49,11 +49,13 @@ export class SearchService {
   constructor(private client: Client) {}
 
   async index(path: string, title: string, tags: string[], body: string): Promise<void> {
-    // FTS5 虚表不支持 UPSERT，标准做法是 delete-then-insert
+    // FTS5 虚表不支持 UPSERT，标准做法是 delete-then-insert。
+    // title/tags 列存原文（供展示）；检索文本 = title+tags+body 归一后并入 body 列（供中文短语命中）。
+    const searchable = toSearchable([title, tags.join(" "), body].filter(Boolean).join("\n"));
     await this.client.execute({ sql: `DELETE FROM artifact_fts WHERE path = ?`, args: [path] });
     await this.client.execute({
       sql: `INSERT INTO artifact_fts (path, title, tags, body) VALUES (?, ?, ?, ?)`,
-      args: [path, toSearchable(title), tags.map(toSearchable).join(" "), toSearchable(body)],
+      args: [path, title, tags.join(" "), searchable],
     });
   }
 

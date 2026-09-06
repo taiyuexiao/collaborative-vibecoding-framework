@@ -14,6 +14,13 @@ export interface CommitInfo {
   author: string;
 }
 
+export interface CommitWithFiles {
+  sha: string;
+  date: string;
+  message: string;
+  paths: string[];
+}
+
 /** 仓库操作抽象。Local 实现面向本地 git CLI；远端托管（Gitee）后续实现同一接口。 */
 export interface GitProvider {
   isRepo(dir: string): Promise<boolean>;
@@ -29,6 +36,7 @@ export interface GitProvider {
   /** 工作区（含 worktree）内相对 baseBranch 的改动文件清单（merge-base 三点 diff）。 */
   changedFiles(dir: string, baseBranch: string): Promise<string[]>;
   log(dir: string, opts?: { n?: number; path?: string }): Promise<CommitInfo[]>;
+  logWithFiles(dir: string, n?: number): Promise<CommitWithFiles[]>;
   revParse(dir: string, ref: string): Promise<string>;
 }
 
@@ -158,6 +166,31 @@ export class LocalGitProvider implements GitProvider {
       .map((line) => {
         const [sha, date, author, ...rest] = line.split("\x1f");
         return { sha: sha ?? "", date: date ?? "", author: author ?? "", message: rest.join("\x1f") };
+      });
+  }
+
+  /** 提交日志及其变更文件清单。分隔符 %x1e 放在记录开头：这样 \x1e 后的 chunk = 头 + 本记录的文件列表。 */
+  async logWithFiles(dir: string, n = 20): Promise<CommitWithFiles[]> {
+    const out = await run(dir, "log", [
+      "-n",
+      String(n),
+      "--name-only",
+      "--pretty=format:%x1e%H%x1f%ad%x1f%s",
+      "--date=iso-strict",
+    ]);
+    return out
+      .split("\x1e")
+      .map((c) => c.replace(/^\n/, ""))
+      .filter(Boolean)
+      .map((chunk) => {
+        const lines = chunk.split("\n").filter(Boolean);
+        const [sha, date, message] = (lines[0] ?? "").split("\x1f");
+        return {
+          sha: sha ?? "",
+          date: date ?? "",
+          message: message ?? "",
+          paths: lines.slice(1).filter(Boolean),
+        };
       });
   }
 

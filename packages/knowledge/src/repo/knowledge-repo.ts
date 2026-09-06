@@ -8,7 +8,7 @@ import {
   type ArtifactType,
 } from "@superteam/core";
 import type { ArtifactsRepo, EventsRepo } from "@superteam/data";
-import type { CommitInfo, GitProvider } from "@superteam/gitprov";
+import type { CommitInfo, CommitWithFiles, GitProvider } from "@superteam/gitprov";
 import type { Logger } from "@superteam/infra";
 import {
   KNOWLEDGE_DIRS,
@@ -155,6 +155,11 @@ export class KnowledgeRepo {
 
   async history(path: string): Promise<CommitInfo[]> {
     return this.o.git.log(this.o.knowledgeDir, { path, n: 50 });
+  }
+
+  /** 仓库级最近变更（含文件清单），供 MCP latest 使用。 */
+  async recentChanges(n = 10): Promise<CommitWithFiles[]> {
+    return this.o.git.logWithFiles(this.o.knowledgeDir, n);
   }
 
   /** 类型化路径策略：adr 自动编号；card/reading 日期前缀；spec/agent-doc 同 slug 复用更新。 */

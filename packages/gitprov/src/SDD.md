@@ -67,3 +67,9 @@ export class LocalGitProvider implements GitProvider
 ## 实际偏差
 
 无。
+
+### S0.5 补充：logWithFiles（S1.5 引入）
+
+接口新增 `logWithFiles(dir, n): Promise<CommitWithFiles[]>`。报错记录：
+1. **报错**：`--pretty=format:%H%x1f%ad%x1f%s%x1e`（分隔符在记录末尾）时，文件列表出现在 \x1e 之后、下一条记录头之前，按 \x1e 分块会把上一条记录的文件清单错解析为下一条记录头（date=undefined）。
+   **解决**：分隔符改放记录**开头**（`%x1e%H...`），每个 chunk 自包含「头+文件列表」。教训：git log 的 pretty format 输出与文件列表的拼接顺序要用最小复现脚本验证（见 SDD 过程）。

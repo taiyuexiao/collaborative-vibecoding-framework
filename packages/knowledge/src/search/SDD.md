@@ -74,3 +74,8 @@ export class SearchService {
 ## 实际偏差
 
 无。
+
+### S1.3 补充：index 列语义修正（S1.5 发现）
+
+2. **报错**：MCP search 命中结果把 title 返回成了分词归一后的文本（「FTS 中 文 检 索 坑」）。
+   **解决**：title/tags 列存**原文**（展示用）；检索文本 = toSearchable(title+tags+body) 并入 body 列（中文短语命中所需）。检索列与展示列分离。
