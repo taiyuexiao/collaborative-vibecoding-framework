@@ -1,4 +1,5 @@
 import { execFile } from "node:child_process";
+import { mkdirSync } from "node:fs";
 import { dirname, basename, join } from "node:path";
 import { realpathSync } from "node:fs";
 import { promisify } from "node:util";
@@ -72,6 +73,7 @@ export class LocalGitProvider implements GitProvider {
   }
 
   async ensureRepo(dir: string, opts?: { defaultBranch?: string }): Promise<void> {
+    mkdirSync(dir, { recursive: true }); // ensure 语义：目录不存在则创建（git init 需要已存在的 cwd）
     if (!(await this.isRepo(dir))) {
       await run(dir, "init", ["-b", opts?.defaultBranch ?? "main"]);
     }

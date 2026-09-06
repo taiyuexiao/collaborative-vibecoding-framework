@@ -1,1 +1,2 @@
-export const PKG = "@superteam/knowledge";
+export * from "./model/index.js";
+export * from "./repo/index.js";

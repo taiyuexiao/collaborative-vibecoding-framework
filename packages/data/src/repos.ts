@@ -272,6 +272,10 @@ export class ArtifactsRepo {
     return rows[0] ? artifactRowToDomain(rows[0]) : null;
   }
 
+  async removeByPath(path: string): Promise<void> {
+    await this.d.delete(t.artifacts).where(eq(t.artifacts.path, path));
+  }
+
   async list(f: { type?: Artifact["type"]; status?: string } = {}): Promise<Artifact[]> {
     const conds = [];
     if (f.type) conds.push(eq(t.artifacts.type, f.type));
