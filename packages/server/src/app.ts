@@ -1,6 +1,10 @@
 import cors from "@fastify/cors";
+import fastifyStatic from "@fastify/static";
 import websocket from "@fastify/websocket";
 import Fastify, { type FastifyInstance, type FastifyRequest } from "fastify";
+import { existsSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { AppError, type Actor, type Member } from "@superteam/core";
 import { statusForError } from "@superteam/infra";
 import { hashToken } from "./context.js";
@@ -43,6 +47,20 @@ export async function buildServer(ctx: Context): Promise<FastifyInstance> {
   });
 
   await app.register(buildRoutes(ctx, broadcast));
+
+  // 托管 web 构建产物：7300 即唯一入口（SPA fallback 不吞 /api 与 /ws 的 404）
+  const webDist = join(dirname(fileURLToPath(import.meta.url)), "../../web/dist");
+  if (existsSync(join(webDist, "index.html"))) {
+    await app.register(fastifyStatic, { root: webDist });
+    app.setNotFoundHandler((req, reply) => {
+      if (req.url.startsWith("/api") || req.url === "/ws") {
+        reply.status(404).send({ error: { code: "NOT_FOUND", message: "Not Found" } });
+      } else {
+        reply.sendFile("index.html");
+      }
+    });
+  }
+
   return app;
 }
 
