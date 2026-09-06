@@ -67,6 +67,9 @@ importers:
 
   packages/knowledge:
     dependencies:
+      '@libsql/client':
+        specifier: ^0.18.0
+        version: 0.18.0
       '@superteam/core':
         specifier: workspace:*
         version: link:../core
