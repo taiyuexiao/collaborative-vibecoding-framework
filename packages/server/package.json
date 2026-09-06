@@ -7,5 +7,16 @@
   "types": "src/index.ts",
   "exports": {
     ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@superteam/core": "workspace:*",
+    "@superteam/data": "workspace:*",
+    "@superteam/gitprov": "workspace:*",
+    "@superteam/infra": "workspace:*",
+    "@superteam/knowledge": "workspace:*",
+    "@superteam/tasks": "workspace:*",
+    "fastify": "^5.2.0",
+    "@fastify/cors": "^11.0.0",
+    "@fastify/websocket": "^11.0.0"
   }
 }
