@@ -11,6 +11,7 @@
   "dependencies": {
     "@superteam/core": "workspace:*",
     "@superteam/data": "workspace:*",
-    "@superteam/infra": "workspace:*"
+    "@superteam/infra": "workspace:*",
+    "zod": "^3.25.76"
   }
 }

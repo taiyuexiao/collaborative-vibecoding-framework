@@ -1,1 +1,1 @@
-export const PKG = "@superteam/tasks";
+export * from "./task-service.js";
