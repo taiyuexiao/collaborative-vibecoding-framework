@@ -65,3 +65,7 @@ export function broadcast(ctx, type: string, payload: unknown): void  // 测试�
 ## 实际偏差
 
 无。
+
+## 补充（S6.4）：7300 直接托管 Web 界面
+
+用户预期「工作入口只有一个」——server 现在用 @fastify/static 托管 packages/web/dist，SPA fallback 对非 /api、/ws 路径回 index.html。构建产物不存在时自动跳过（纯 API 模式仍可用）。dev 实例数据目录（/data/、/knowledge/）加入 .gitignore。
