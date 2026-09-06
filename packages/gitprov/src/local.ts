@@ -85,6 +85,12 @@ export class LocalGitProvider implements GitProvider {
     if (!(await this.isRepo(dir))) {
       await run(dir, "init", ["-b", opts?.defaultBranch ?? "main"]);
     }
+    // 空仓库（无任何提交）时 main 分支 unborn，merge-base/worktree 会失败——补一个空提交保证 HEAD 存在
+    try {
+      await run(dir, "rev-parse", ["--verify", "HEAD"]);
+    } catch {
+      await run(dir, "commit", ["--allow-empty", "-m", "init"]);
+    }
     // 仓库级身份：无全局配置的机器也能 commit；不覆盖用户已有配置
     try {
       await run(dir, "config", ["user.name"]);

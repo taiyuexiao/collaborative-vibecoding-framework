@@ -27,7 +27,21 @@ importers:
         specifier: ^3.25.76
         version: 3.25.76
 
-  packages/daemon: {}
+  packages/daemon:
+    dependencies:
+      '@superteam/core':
+        specifier: workspace:*
+        version: link:../core
+      '@superteam/gitprov':
+        specifier: workspace:*
+        version: link:../gitprov
+      '@superteam/infra':
+        specifier: workspace:*
+        version: link:../infra
+    devDependencies:
+      '@superteam/server':
+        specifier: workspace:*
+        version: link:../server
 
   packages/data:
     dependencies:

@@ -45,10 +45,10 @@
 
 | # | 子模块 | 包/位置 | 依赖 | 状态 |
 |---|---|---|---|---|
-| S3.1 | daemon 骨架（注册/心跳/WS） | packages/daemon | S2.x API | ⬜ |
-| S3.2 | AgentAdapter 抽象 + claude-code/echo 适配器 | packages/daemon/src/adapters | S3.1 | ⬜ |
-| S3.3 | 任务执行器（worktree+prompt 组装+回写） | packages/daemon/src/executor | S3.2 | ⬜ |
-| S3.4 | 服务端 sessions 模块 | packages/server | S3.1 | ⬜ |
+| S3.1 | daemon 骨架（注册/心跳/WS） | packages/daemon | S2.x API | ✅ |
+| S3.2 | AgentAdapter 抽象 + claude-code/echo 适配器 | packages/daemon/src/adapters | S3.1 | ✅ |
+| S3.3 | 任务执行器（worktree+prompt 组装+回写） | packages/daemon/src/executor | S3.2 | ✅ |
+| S3.4 | 服务端 sessions 模块 | packages/server | S3.1 | ✅ |
 
 ## M4 冲突雷达
 

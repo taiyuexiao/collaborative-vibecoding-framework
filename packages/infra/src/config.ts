@@ -2,7 +2,7 @@ import { z } from "zod";
 import { AppError } from "@superteam/core";
 
 const ConfigSchema = z.object({
-  port: z.coerce.number().int().min(1).max(65535).default(7300),
+  port: z.coerce.number().int().min(0).max(65535).default(7300), // 0 = 临时端口（测试用）
   host: z.string().default("127.0.0.1"),
   dataDir: z.string().default("./data"),
   knowledgeDir: z.string().default("./knowledge"),
