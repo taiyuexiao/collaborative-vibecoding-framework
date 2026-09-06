@@ -39,7 +39,7 @@
 | S2.1 | 任务 CRUD API | packages/tasks/src/routes | S0.3 | ⬜ |
 | S2.2 | 状态机迁移 + 事件 outbox | packages/tasks/src/state | S0.2,S0.3 | ⬜ |
 | S2.3 | 依赖图（环检测/下游通知） | packages/tasks/src/deps | S2.1 | ⬜ |
-| S2.4 | 看板 Web UI 一版 | packages/web | S2.1,S2.2 | ⬜ |
+| S2.4 | 看板 Web UI 一版 | packages/web | S2.1,S2.2 | ✅ |
 
 ## M3 会话桥 daemon
 
@@ -75,7 +75,7 @@
 
 ## 里程碑
 
-- [ ] MS1：M0+M1+M2（M0 已完成） —— 知识库+任务总线+MCP 可用
+- [x] MS1：M0+M1+M2 —— 知识库+任务总线+MCP+看板可用（curl 冒烟通过） —— 知识库+任务总线+MCP 可用
 - [ ] MS2：M3+M4 —— 任务执行闭环+冲突预警
 - [ ] MS3：M5+M6 —— 蒸馏、档案站、通知、端到端冒烟
 
